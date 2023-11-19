@@ -15,7 +15,7 @@ module ActiveRecord
 
         return if ignore_payload?(payload)
 
-        connection = ObjectSpace._id2ref(payload[:connection_id])
+        connection = payload.key?(:connection_id) ? ObjectSpace._id2ref(payload[:connection_id]) : payload[:connection]
 
         # disable SeqScan when index exists
         #   SEE ALSO: http://www.postgresql.org/docs/9.4/static/indexes-examine.html

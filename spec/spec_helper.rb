@@ -10,7 +10,11 @@ ActiveRecord::Base.establish_connection(
 
 class User < ActiveRecord::Base; end
 
-ActiveRecord::Migrator.migrate File.expand_path("../db/migrate", __FILE__), nil
+if ActiveRecord::Migrator.respond_to? :migrate
+  ActiveRecord::Migrator.migrate File.expand_path("../db/migrate", __FILE__), nil
+else
+  ActiveRecord::MigrationContext.new(File.expand_path("../db/migrate", __FILE__)).migrate
+end
 
 require 'logger' # for 3.2.gemfile
 
